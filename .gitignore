@@ -3,6 +3,10 @@
 # example audits live in docs/examples/.
 battle-tests/
 
+# Local QA / publish-gate evidence (references internal review process); kept
+# for the maintainer's own review, not part of the published skill.
+gates/
+
 # OS / editor
 .DS_Store
 Thumbs.db
