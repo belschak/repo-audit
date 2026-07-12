@@ -41,8 +41,8 @@ Verify yourself: 2-4 concrete spot-checks you can do in minutes
 
 Two real runs, written up in full:
 
-- [**UNSAFE** — a repackaged CLI clone hiding a malware dropper](docs/examples/unsafe-repackaged-clone-with-dropper.md). A young low-star repo advertising an installable CLI turned out to be a legitimate project cloned, its README rewritten into a "download and double-click the installer" funnel, with a Windows dropper (`gcm.exe` + obfuscated payload + launcher) checked in. Caught read-only, without ever running the payload.
-- [**SAFE-WITH-CONDITIONS** — a third-party Claude skill](docs/examples/safe-with-conditions-claude-skill.md). A mid-size community skill that reprograms how the agent plans and delegates. Security-clean under a full Phase 5 read, but shipped with no license and broad tool grants on its sub-agents: conditions, not a clean bill.
+- [**UNSAFE**: a repackaged CLI clone hiding a malware dropper](docs/examples/unsafe-repackaged-clone-with-dropper.md). A young low-star repo advertising an installable CLI turned out to be a legitimate project cloned, its README rewritten into a "download and double-click the installer" funnel, with a Windows dropper (`gcm.exe` + obfuscated payload + launcher) checked in. Caught read-only, without ever running the payload.
+- [**SAFE-WITH-CONDITIONS**: a third-party Claude skill](docs/examples/safe-with-conditions-claude-skill.md). A mid-size community skill that reprograms how the agent plans and delegates. Security-clean under a full Phase 5 read, but shipped with no license and broad tool grants on its sub-agents: conditions, not a clean bill.
 
 ## Quickstart (under 5 minutes)
 
