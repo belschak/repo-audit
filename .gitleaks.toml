@@ -1,0 +1,15 @@
+# gitleaks config for repo-audit
+# Extends the default ruleset. This repo ships no secrets and no placeholder
+# keys; the only allowlist is the local working scratch under battle-tests/
+# (hostile third-party clones, never committed) so a --no-git sweep of the
+# working tree does not scan them.
+title = "repo-audit"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Local scratch only; never part of the repo"
+paths = [
+  '''battle-tests/''',
+]

@@ -2,3 +2,9 @@
 # never be committed, and the raw run notes stay local. Published, sanitized
 # example audits live in docs/examples/.
 battle-tests/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,78 @@
+# repo-audit
+
+**A Claude Code / agent skill that reads third-party code for red flags before you install it.**
+
+![Animated diagram: a repo enters a six-phase read-only audit and comes out stamped SAFE, SAFE-WITH-CONDITIONS, or UNSAFE](assets/demo.svg)
+
+Agents install third-party skills the way people run `curl | bash`. This skill is the look before running.
+
+Installation is the moment of maximum exposure. Install hooks run arbitrary code with your user's rights, and agent-facing files (skills, MCP servers, hooks) get to whisper instructions to a model that holds your tools and credentials. Most supply-chain attacks succeed not because they were unfindable but because nobody looked before running. `repo-audit` is a procedure for looking: a read-only, six-phase pass over any repo, package, skill, plugin, or MCP server that produces a **SAFE / SAFE-WITH-CONDITIONS / UNSAFE** verdict with evidence, every red flag quoted verbatim, and concrete conditions like version pinning.
+
+It is a skill, so your agent runs it. You paste a GitHub or npm link with intent to install, or the agent is about to recommend something, and this procedure runs first.
+
+## What it checks (six phases)
+
+| Phase | Looks at | Catches |
+|------:|----------|---------|
+| 1 | Identity and reputation | repackaged clones, typosquats, empty-shell accounts, the xz maintainer-swap pattern |
+| 2 | What runs at install time | `postinstall` hooks, `setup.py`, `build.rs`, `curl \| bash` installers, auto-running editor/agent config |
+| 3 | Code (hotspots first) | obfuscated blobs, `eval` on remote input, credential/wallet/clipboard theft, conditional payloads, invisible/bidi characters, checked-in binaries |
+| 4 | Dependencies and CI | install scripts across the whole tree, known-malicious packages (OSV), risky GitHub Actions |
+| 5 | Agent-facing files | prompt injection: instructions serving the vendor not you, hidden tool-description blocks, cross-tool shadowing, remote instruction loading, over-broad tool grants |
+| 6 | License | missing or mismatched license, uncredited copied code |
+
+Depth scales to blast radius: an agent skill is small text with catastrophic reach, so every file is read; a large library gets a full Phase 1-2 then a hotspot pass, with what was not read declared in the verdict.
+
+## The verdict format
+
+Every audit ends in the same shape, so verdicts stay comparable:
+
+```
+## Verdict: SAFE | SAFE-WITH-CONDITIONS | UNSAFE
+Target: <owner/repo@commit, pkg@version, or bundle sha256> · audited <date>
+Scope: what was read in full, what was sampled, what was NOT checked
+Evidence: bullet per finding, each with file:line or the command output that shows it
+Red flags: every one, verbatim, even under a SAFE verdict (or "none found")
+Conditions (if applicable): pin to <sha>, --ignore-scripts, sandbox first run, remove <component>, re-audit on update
+Verify yourself: 2-4 concrete spot-checks you can do in minutes
+```
+
+## Example audits
+
+Two real runs, written up in full:
+
+- [**UNSAFE** — a repackaged CLI clone hiding a malware dropper](docs/examples/unsafe-repackaged-clone-with-dropper.md). A young low-star repo advertising an installable CLI turned out to be a legitimate project cloned, its README rewritten into a "download and double-click the installer" funnel, with a Windows dropper (`gcm.exe` + obfuscated payload + launcher) checked in. Caught read-only, without ever running the payload.
+- [**SAFE-WITH-CONDITIONS** — a third-party Claude skill](docs/examples/safe-with-conditions-claude-skill.md). A mid-size community skill that reprograms how the agent plans and delegates. Security-clean under a full Phase 5 read, but shipped with no license and broad tool grants on its sub-agents: conditions, not a clean bill.
+
+## Quickstart (under 5 minutes)
+
+Copy this folder into your skills directory:
+
+```bash
+git clone --depth=1 https://github.com/belschak/repo-audit.git \
+  ~/.claude/skills/repo-audit
+```
+
+(Cloning straight into the skills folder keeps `git pull` working for updates. On Windows, run this in Git Bash or PowerShell.)
+
+That is it. There is no build and there are no dependencies. The skill triggers when you ask "is this safe?", "audit this repo", "should I install X", when you paste a GitHub/npm/PyPI/marketplace link with intent to install, or when the agent is itself about to recommend or install third-party code. All commands in the skill are written to run unchanged in both bash and PowerShell.
+
+## Honest limits
+
+- **An audit reduces risk; it cannot prove absence of malice.** The verdict states what was checked, what was not, and where residual risk lives. It never claims "100% safe".
+- **A verdict binds to one commit or version.** Pin by SHA or artifact hash, never a tag (tags move). Any later update is unaudited by definition, so "re-audit on update" is in every report.
+- **The audit is read-only by design.** It fetches, clones, and reads; it never installs, builds, or runs the target. That is the whole point: running it would be the attack succeeding early.
+- **Popularity is not an audit.** Stars can be bought and typosquats live off famous names. For famous projects the fast path is verifying you hold the canonical repo, not skipping checks.
+- **Not affiliated** with GitHub, npm, PyPI, OSV, Anthropic, or any audited project. Verdicts are one auditor's evidence-based read, not a certification, and the install decision stays yours.
+
+## Related skills
+
+- [**web-research-cascade**](https://github.com/belschak/web-research-cascade): when your agent hits a `403`, escalate the *same* source through stronger fetch methods instead of silently summarizing a weaker one. The fetch discipline that pairs with this audit discipline.
+
+## Contributing
+
+Issues and PRs welcome. The audit procedure improves the way this one did: by being run against real repos and hardened from what each run missed. Good first contributions: a new detection pattern with a real example that motivates it, a platform fix (Windows paths, shell quirks), or a sanitized example audit for `docs/examples/`. Details in [CONTRIBUTING.md](CONTRIBUTING.md); issues labeled `good first issue` are scoped to under an hour.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
