@@ -1,1 +1,4 @@
-battle-tests/targets/
+# Working scratch: hostile third-party clones under battle-tests/targets/ must
+# never be committed, and the raw run notes stay local. Published, sanitized
+# example audits live in docs/examples/.
+battle-tests/
