@@ -6,7 +6,7 @@
 
 Agents install third-party skills the way people run `curl | bash`. This skill is the look before running.
 
-Installation is the moment of maximum exposure. Install hooks run arbitrary code with your user's rights, and agent-facing files (skills, MCP servers, hooks) get to whisper instructions to a model that holds your tools and credentials. Most supply-chain attacks succeed not because they were unfindable but because nobody looked before running. `repo-audit` is a procedure for looking: a read-only, six-phase pass over any repo, package, skill, plugin, or MCP server that produces a **SAFE / SAFE-WITH-CONDITIONS / UNSAFE** verdict with evidence, every red flag quoted verbatim, and concrete conditions like version pinning.
+Installation is the moment of maximum exposure. Install hooks run arbitrary code with your user's rights, and agent-facing files (skills, MCP servers, hooks) get to whisper instructions to a model that holds your tools and credentials. In supply-chain compromises the malicious code is usually findable in advance. It ships because nobody looked before running. `repo-audit` is a procedure for looking: a read-only, six-phase pass over any repo, package, skill, plugin, or MCP server that produces a **SAFE / SAFE-WITH-CONDITIONS / UNSAFE** verdict with evidence, every red flag quoted verbatim, and concrete conditions like version pinning.
 
 It is a skill, so your agent runs it. You paste a GitHub or npm link with intent to install, or the agent is about to recommend something, and this procedure runs first.
 
@@ -55,7 +55,7 @@ git clone --depth=1 https://github.com/belschak/repo-audit.git \
 
 (Cloning straight into the skills folder keeps `git pull` working for updates. On Windows, run this in Git Bash or PowerShell.)
 
-That is it. There is no build and there are no dependencies. The skill triggers when you ask "is this safe?", "audit this repo", "should I install X", when you paste a GitHub/npm/PyPI/marketplace link with intent to install, or when the agent is itself about to recommend or install third-party code. All commands in the skill are written to run unchanged in both bash and PowerShell.
+That is it. There is no build and there are no dependencies. The skill triggers when you ask "is this safe?", "audit this repo", "should I install X", when you paste a GitHub/npm/PyPI/marketplace link with intent to install, or when the agent is itself about to recommend or install third-party code. The `gh`, `git`, and `rg` audit commands (including the single-quote regex literals) run unchanged in both bash and PowerShell; a few use Unix pipe helpers like `wc` and `sort`, so on Windows run those from Git Bash.
 
 ## Honest limits
 

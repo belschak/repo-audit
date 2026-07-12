@@ -6,7 +6,7 @@ This is a security-audit procedure, and procedures improve by being run. Every h
 
 1. **A new detection pattern with a real example.** You found a repo doing something the audit would miss, and the check that would have caught it. Open an issue with the (public) repo or package, what the audit misses, and the grep or reasoning that catches it. A pattern without a motivating example is hard to weigh, so bring one.
 2. **A sanitized example audit for `docs/examples/`.** A full run against a public target in the exact verdict format, with no local paths, private names, or unpinned references. These are what make the skill trustworthy; a good one can carry the whole repo.
-3. **A platform fix.** Every command in `SKILL.md` must run unchanged in both bash and PowerShell. If one does not, that is a bug worth a PR.
+3. **A platform fix.** The `rg`/`gh`/`git` audit commands should run in both bash and PowerShell; the Unix pipe helpers (`wc`, `sort`, `uniq`) and `curl` assume a Unix-like shell, so on Windows they run from Git Bash. A command that breaks where it is documented to work is a bug worth a PR.
 4. **A false-positive or false-negative report.** A red flag the skill raises that is actually benign, or a benign-looking construct that is actually dangerous, both make the procedure sharper.
 
 ## Your first 30 minutes

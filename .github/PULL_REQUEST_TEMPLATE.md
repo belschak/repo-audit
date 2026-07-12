@@ -11,4 +11,4 @@
 - [ ] No secrets, tokens, private URLs, or personal paths in the skill, docs, or examples
 - [ ] Any new example is sanitized and pins its target by commit SHA or artifact hash
 - [ ] SKILL.md stays compact (edited an existing phase rather than adding one, where possible)
-- [ ] Any new command runs unchanged in both bash and PowerShell
+- [ ] Any new command runs where it is documented to work (portable `rg`/`gh`/`git` in bash and PowerShell; Unix pipe helpers and `curl` noted as Git Bash on Windows)

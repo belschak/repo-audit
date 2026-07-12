@@ -3,7 +3,7 @@ name: repo-audit
 description: Security audit of any third-party repo, package, skill, plugin, or MCP server BEFORE it is installed or executed. Use this skill whenever the user asks "is this safe?", "audit/vet/check this repo", "should I install X", pastes a GitHub/npm/PyPI/marketplace link with intent to install, or whenever you yourself are about to recommend or install third-party code, even if nobody says the word "audit". Covers maintainer reputation, typosquatting, install-time hooks, obfuscation, exfiltration and secrets-harvesting patterns, dependency and CI risks, and prompt injection in agent-facing files (skills, agent configs, MCP tool descriptions). Produces a SAFE / SAFE-WITH-CONDITIONS / UNSAFE verdict with evidence, transparent red flags, and conditions such as version pinning.
 ---
 
-Installation is the moment of maximum exposure: install hooks run arbitrary code with your user's rights, and agent-facing files (skills, MCP servers, hooks) get to whisper instructions to a model that holds your tools and credentials. Most supply-chain attacks succeed not because they were unfindable but because nobody looked before running. This skill is the look before running.
+Installation is the moment of maximum exposure: install hooks run arbitrary code with your user's rights, and agent-facing files (skills, MCP servers, hooks) get to whisper instructions to a model that holds your tools and credentials. In supply-chain compromises the malicious code is usually findable in advance. It ships because nobody looked before running. This skill is the look before running.
 
 ## Ground rules
 
@@ -16,7 +16,7 @@ Installation is the moment of maximum exposure: install hooks run arbitrary code
 7. **The verdict binds to one commit/version.** Pin by commit SHA or artifact hash, never by tag name (tags can be moved after the audit). For unversioned bundles (marketplace skills, plain file downloads) record a sha256 of the audited content. Any later update is unaudited by definition, so "re-audit on update" belongs in every report.
 8. **GitHub always via `gh` CLI** (authenticated, structured JSON), never by scraping the website. Where `gh api` is unavailable, its public read endpoints return the same JSON through any authenticated fetch (`https://api.github.com/repos/<o>/<r>/contributors`, `.../users/<owner>`, `.../commits`); a blocked endpoint is marked NOT-CHECKED, never downgraded to HTML scraping.
 
-All commands below are written as single-quote literals that run unchanged in bash and PowerShell; do not re-escape them.
+All commands below use single-quote literals, so the regex patterns need no re-escaping in bash or PowerShell; do not re-escape them. The `rg`/`gh`/`git` one-liners run in both shells; the few Unix pipe helpers (`wc`, `sort`, `uniq`) and the `curl` OSV call assume a Unix-like shell, so on Windows run them from Git Bash (each also has a GET fallback noted inline).
 
 ## Scale depth to blast radius
 
