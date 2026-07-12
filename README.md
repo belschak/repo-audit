@@ -63,7 +63,6 @@ That is it. There is no build and there are no dependencies. The skill triggers 
 - **A verdict binds to one commit or version.** Pin by SHA or artifact hash, never a tag (tags move). Any later update is unaudited by definition, so "re-audit on update" is in every report.
 - **The audit is read-only by design.** It fetches, clones, and reads; it never installs, builds, or runs the target. That is the whole point: running it would be the attack succeeding early.
 - **Popularity is not an audit.** Stars can be bought and typosquats live off famous names. For famous projects the fast path is verifying you hold the canonical repo, not skipping checks.
-- **Not affiliated** with GitHub, npm, PyPI, OSV, Anthropic, or any audited project. Verdicts are one auditor's evidence-based read, not a certification, and the install decision stays yours.
 
 ## Related skills
 
@@ -72,6 +71,14 @@ That is it. There is no build and there are no dependencies. The skill triggers 
 ## Contributing
 
 Issues and PRs welcome. The audit procedure improves the way this one did: by being run against real repos and hardened from what each run missed. Good first contributions: a new detection pattern with a real example that motivates it, a platform fix (Windows paths, shell quirks), or a sanitized example audit for `docs/examples/`. Details in [CONTRIBUTING.md](CONTRIBUTING.md); issues labeled `good first issue` are scoped to under an hour.
+
+## Disclaimer
+
+This project is not affiliated with, endorsed by, or sponsored by GitHub, npm, PyPI, OSV, Anthropic, or any project named in it. A verdict is one auditor's evidence-based read at a single pinned commit or version on the audit date, not a certification, and the install decision stays yours.
+
+The example audits are good-faith security research in the public interest. Each describes the state of a target at the commit or artifact hash it names, on the date it names, and every finding rests on read-only evidence anyone can reproduce with the "Verify yourself" commands. Targets are named only as far as identifying the security issue requires. Where an example describes a repository as a repackaged clone, naming the legitimate upstream author implies no wrongdoing on their part: they are named as the party whose work was copied, so readers can find the safe original. If you believe an example is inaccurate, open an issue with evidence and it will be corrected or removed.
+
+The audit techniques read only public data through official, documented endpoints and never execute the target. You remain responsible for complying with the terms of service of any site or API you access and with applicable law. Use at your own risk; see [LICENSE](LICENSE) for the warranty disclaimer.
 
 ## License
 
