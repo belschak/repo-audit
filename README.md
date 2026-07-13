@@ -60,7 +60,19 @@ git clone --depth=1 https://github.com/belschak/repo-audit.git "$HOME\.claude\sk
 
 The two forms differ on purpose: PowerShell does not treat `~` as your home directory when it passes the path to `git`, so it needs `"$HOME\..."` instead.
 
-That is it. There is no build and there are no dependencies. The skill triggers when you ask "is this safe?", "audit this repo", "should I install X", when you paste a GitHub/npm/PyPI/marketplace link with intent to install, or when the agent is itself about to recommend or install third-party code. The `gh`, `git`, and `rg` audit commands (including the single-quote regex literals) run unchanged in both bash and PowerShell; a few use Unix pipe helpers like `wc` and `sort`, so on Windows run those from Git Bash.
+### Windows command equivalents
+
+For the few Unix pipe helpers used below, native PowerShell equivalents are:
+
+```powershell
+@(git ls-files).Count
+$f = @(git ls-files); $f | Group-Object { $_.ToLowerInvariant() } | Where-Object Count -gt 1 | ForEach-Object Group
+Invoke-RestMethod -Method Post -Uri https://api.osv.dev/v1/query -ContentType 'application/json' -Body '{"package":{"ecosystem":"npm","name":"<pkg>"}}'
+```
+
+The first counts tracked files, the second reports case-insensitive filename collisions, and the third queries OSV. The collision check preserves the `README.md`/`readme.md` distinction that matters on case-sensitive filesystems.
+
+That is it. There is no build and there are no dependencies. The skill triggers when you ask "is this safe?", "audit this repo", "should I install X", when you paste a GitHub/npm/PyPI/marketplace link with intent to install, or when the agent is itself about to recommend or install third-party code. The `gh`, `git`, and `rg` audit commands (including the single-quote regex literals) run unchanged in both bash and PowerShell; use the equivalents above instead of Unix pipe helpers on Windows.
 
 ## Honest limits
 
