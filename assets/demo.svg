@@ -34,7 +34,7 @@
     </text>
 
     <!-- Phase 1 -->
-    <text y="112">
+    <text y="110">
       <tspan x="28"  class="lbl">Phase 1</tspan>
       <tspan x="130" class="lbl">identity</tspan>
       <tspan x="330" class="dim">-&gt;</tspan>
@@ -44,43 +44,53 @@
     </text>
 
     <!-- Phase 2: the flag -->
-    <text y="142">
+    <text y="136">
       <tspan x="28"  class="lbl">Phase 2</tspan>
       <tspan x="130" class="lbl">install-time</tspan>
       <tspan x="330" class="dim">-&gt;</tspan>
       <tspan x="372" class="run">postinstall runs a script  [flag]</tspan>
       <animate attributeName="opacity" dur="22s" repeatCount="indefinite"
-               values="0;0;1;1" keyTimes="0;0.18;0.195;1"/>
+               values="0;0;1;1" keyTimes="0;0.17;0.185;1"/>
     </text>
 
     <!-- Phase 3 -->
-    <text y="172">
+    <text y="162">
       <tspan x="28"  class="lbl">Phase 3</tspan>
       <tspan x="130" class="lbl">code</tspan>
       <tspan x="330" class="dim">-&gt;</tspan>
       <tspan x="372" class="ok">no obfuscation, no exfil path</tspan>
       <animate attributeName="opacity" dur="22s" repeatCount="indefinite"
-               values="0;0;1;1" keyTimes="0;0.28;0.295;1"/>
+               values="0;0;1;1" keyTimes="0;0.24;0.255;1"/>
+    </text>
+
+    <!-- Phase 4 -->
+    <text y="188">
+      <tspan x="28"  class="lbl">Phase 4</tspan>
+      <tspan x="130" class="lbl">deps + CI</tspan>
+      <tspan x="330" class="dim">-&gt;</tspan>
+      <tspan x="372" class="ok">lockfile clean, OSV clear</tspan>
+      <animate attributeName="opacity" dur="22s" repeatCount="indefinite"
+               values="0;0;1;1" keyTimes="0;0.31;0.325;1"/>
     </text>
 
     <!-- Phase 5 -->
-    <text y="202">
+    <text y="214">
       <tspan x="28"  class="lbl">Phase 5</tspan>
       <tspan x="130" class="lbl">agent-files</tspan>
       <tspan x="330" class="dim">-&gt;</tspan>
       <tspan x="372" class="ok">no injection, tool grants sane</tspan>
       <animate attributeName="opacity" dur="22s" repeatCount="indefinite"
-               values="0;0;1;1" keyTimes="0;0.37;0.385;1"/>
+               values="0;0;1;1" keyTimes="0;0.38;0.395;1"/>
     </text>
 
     <!-- Phase 6 -->
-    <text y="232">
+    <text y="240">
       <tspan x="28"  class="lbl">Phase 6</tspan>
       <tspan x="130" class="lbl">license</tspan>
       <tspan x="330" class="dim">-&gt;</tspan>
       <tspan x="372" class="ok">MIT, matches metadata</tspan>
       <animate attributeName="opacity" dur="22s" repeatCount="indefinite"
-               values="0;0;1;1" keyTimes="0;0.46;0.475;1"/>
+               values="0;0;1;1" keyTimes="0;0.45;0.465;1"/>
     </text>
 
     <!-- verdict stamp -->

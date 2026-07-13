@@ -6,7 +6,7 @@
 
 Agents install third-party skills the way people run `curl | bash`. This skill is the look before running.
 
-Installation is the moment of maximum exposure. Install hooks run arbitrary code with your user's rights, and agent-facing files (skills, MCP servers, hooks) get to whisper instructions to a model that holds your tools and credentials. In supply-chain compromises the malicious code is usually findable in advance. It ships because nobody looked before running. `repo-audit` is a procedure for looking: a read-only, six-phase pass over any repo, package, skill, plugin, or MCP server that produces a **SAFE / SAFE-WITH-CONDITIONS / UNSAFE** verdict with evidence, every red flag quoted verbatim, and concrete conditions like version pinning.
+Installation is the moment of maximum exposure. Install hooks run arbitrary code with your user's rights, and agent-facing files (skills, MCP servers, hooks) get to whisper instructions to a model that holds your tools and credentials. In registry and repo-level supply-chain compromises the malicious code is usually findable in advance. It ships because nobody looked before running. `repo-audit` is a procedure for looking: a read-only, six-phase pass over any repo, package, skill, plugin, or MCP server that produces a **SAFE / SAFE-WITH-CONDITIONS / UNSAFE** verdict with evidence, every red flag quoted verbatim, and concrete conditions like version pinning.
 
 It is a skill, so your agent runs it. You paste a GitHub or npm link with intent to install, or the agent is about to recommend something, and this procedure runs first.
 
@@ -33,8 +33,8 @@ Target: <owner/repo@commit, pkg@version, or bundle sha256> · audited <date>
 Scope: what was read in full, what was sampled, what was NOT checked
 Evidence: bullet per finding, each with file:line or the command output that shows it
 Red flags: every one, verbatim, even under a SAFE verdict (or "none found")
-Conditions (if applicable): pin to <sha>, --ignore-scripts, sandbox first run, remove <component>, re-audit on update
-Verify yourself: 2-4 concrete spot-checks you can do in minutes
+Conditions (if applicable): pin to <commit SHA/version/hash>, install with --ignore-scripts, verify installer sha256 and run only the verified local copy, sandbox first run, remove/disable <component>, re-audit on update
+Verify yourself: 2-4 concrete spot-checks the user can do in minutes
 ```
 
 ## Example audits
@@ -46,14 +46,19 @@ Two real runs, written up in full:
 
 ## Quickstart (under 5 minutes)
 
-Copy this folder into your skills directory:
+Clone straight into your skills directory (this keeps `git pull` working for updates):
 
 ```bash
-git clone --depth=1 https://github.com/belschak/repo-audit.git \
-  ~/.claude/skills/repo-audit
+# Git Bash, macOS, or Linux
+git clone --depth=1 https://github.com/belschak/repo-audit.git ~/.claude/skills/repo-audit
 ```
 
-(Cloning straight into the skills folder keeps `git pull` working for updates. On Windows, run this in Git Bash or PowerShell.)
+```powershell
+# Windows PowerShell
+git clone --depth=1 https://github.com/belschak/repo-audit.git "$HOME\.claude\skills\repo-audit"
+```
+
+The two forms differ on purpose: PowerShell does not treat `~` as your home directory when it passes the path to `git`, so it needs `"$HOME\..."` instead.
 
 That is it. There is no build and there are no dependencies. The skill triggers when you ask "is this safe?", "audit this repo", "should I install X", when you paste a GitHub/npm/PyPI/marketplace link with intent to install, or when the agent is itself about to recommend or install third-party code. The `gh`, `git`, and `rg` audit commands (including the single-quote regex literals) run unchanged in both bash and PowerShell; a few use Unix pipe helpers like `wc` and `sort`, so on Windows run those from Git Bash.
 

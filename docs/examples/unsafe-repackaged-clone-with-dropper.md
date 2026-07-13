@@ -5,10 +5,10 @@ A real audit run of a young, low-star GitHub repo advertising an installable CLI
 Names below are the real public repositories. Every command is one you can run yourself.
 
 ## Verdict: UNSAFE
-Target: `stbarbe/agent-skills-cli@fc1876caf56391a31b418441291e38e2653b834c` (repo HEAD). This is NOT the npm package `agent-skills-cli` (that resolves to the legitimate upstream, see below); the target is specifically this GitHub repository as a code/download source.
+Target: `stbarbe/agent-skills-cli@fc1876caf56391a31b418441291e38e2653b834c` (the default-branch HEAD at audit time) · audited 2026-07-13. The repo was force-pushed after the audit, so a fresh clone now lands on a different HEAD and `git checkout fc1876ca` will not resolve; the audited commit stays viewable at `github.com/stbarbe/agent-skills-cli/commit/fc1876ca`, and the payload it pins is fixed by the ZIP sha256 below regardless of later history edits (a follow-up re-check found the same funnel README and the same-size ZIP still live on the new HEAD). This is NOT the npm package `agent-skills-cli` (that resolves to the legitimate upstream, see below); the target is specifically this GitHub repository as a code/download source.
 
 Scope:
-- Read in full: README.md (and its full git diff vs the inherited upstream), package.json, all 13 TypeScript source files under src/, both SKILL.md files, the git history, and the metadata (not the bytes) of the checked-in archive.
+- Read in full: README.md (and its full git diff vs the inherited upstream), package.json, all 12 TypeScript source files under src/, both SKILL.md files, the git history, and the metadata (not the bytes) of the checked-in archive.
 - Characterized read-only, NEVER extracted or executed: `skills/deep-researcher/cli-skills-agent-retainableness.zip` (sha256 `2763e2dc86450b13aead6f2e8395822c05eeca75e9900e8be74682a1d2b2a1b3`). Its central directory was listed and magic bytes / the 26-byte launcher read in memory; the .exe and payload were never run, unpacked to disk, or imported.
 - NOT CHECKED: dynamic behaviour of the dropped executable (out of scope for a read-only audit; would need a disposable sandbox). It does not need to run to reach the verdict.
 
@@ -27,7 +27,7 @@ Red flags: every item above is a flag. The decisive one: a checked-in Windows ex
 Conditions: none. There is no safe way to use this repository. Do not clone it as a dependency source, do not download or run the release ZIP. If the CLI's functionality is actually wanted, audit the upstream `Karanjot786/agent-skills-cli` (npm `agent-skills-cli`) separately on its own merits; this report does not clear it, it only identifies it as the thing that was copied.
 
 Verify yourself (all read-only, none run the payload):
-1. `git clone https://github.com/stbarbe/agent-skills-cli && cd agent-skills-cli && git log --format='%an' | sort -u`: the history authors are Karanjot786, not stbarbe.
+1. `git clone https://github.com/stbarbe/agent-skills-cli && cd agent-skills-cli && git log --format='%an' | sort -u`: three authors appear. The substantive project history up to `d563c24` is authored by `Karanjot Singh` / `Karanjot786`; `stbarbe` contributes only three `Update README.md` commits, which is where the funnel README and the ZIP were added.
 2. `python -c "import zipfile; print(zipfile.ZipFile('skills/deep-researcher/cli-skills-agent-retainableness.zip').namelist())"`: lists gcm.exe, bytecode.txt, Launcher.cmd without extracting.
 3. `python -c "import zipfile; print(zipfile.ZipFile('skills/deep-researcher/cli-skills-agent-retainableness.zip').read('Launcher.cmd'))"`: prints `b'start gcm.exe bytecode.txt'`.
 4. Open README.md and confirm the "Download / double-click the .exe" instructions and the malformed badge URL; compare to the upstream README's `npm install` quickstart.
