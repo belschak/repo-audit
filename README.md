@@ -2,7 +2,7 @@
 
 **A Claude Code / agent skill that reads third-party code for red flags before you install it.**
 
-![Animated diagram: a repo enters a six-phase read-only audit and comes out stamped SAFE, SAFE-WITH-CONDITIONS, or UNSAFE](assets/demo.svg)
+![Animated diagram: a repo enters a six-phase read-only audit and comes out stamped with a verdict](assets/demo.svg)
 
 Agents install third-party skills the way people run `curl | bash`. This skill is the look before running.
 
@@ -75,7 +75,7 @@ That is it. There is no build and there are no dependencies. The skill triggers 
 
 ## Contributing
 
-Issues and PRs welcome. The audit procedure improves the way this one did: by being run against real repos and hardened from what each run missed. Good first contributions: a new detection pattern with a real example that motivates it, a platform fix (Windows paths, shell quirks), or a sanitized example audit for `docs/examples/`. Details in [CONTRIBUTING.md](CONTRIBUTING.md); issues labeled `good first issue` are scoped to under an hour.
+Issues and PRs welcome. The audit procedure improves the way this one did: by being run against real repos and hardened from what each run missed. Good first contributions: a new detection pattern with a real example that motivates it, a platform fix (Windows paths, shell quirks), or a sanitized example audit for `docs/examples/`. Details in [CONTRIBUTING.md](CONTRIBUTING.md); issues labeled `good first issue` are scoped to 30 to 60 minutes.
 
 ## Disclaimer
 

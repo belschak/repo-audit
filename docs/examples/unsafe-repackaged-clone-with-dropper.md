@@ -1,6 +1,6 @@
 # Example audit: UNSAFE, a repackaged CLI clone hiding a malware dropper
 
-A real audit run of a young, low-star GitHub repo advertising an installable CLI (`skills` / `agent-skills` bins). It looked like an ordinary small utility. It is a repackaged clone of a legitimate project with an injected Windows dropper, distributed through a fake "download and run the installer" README. This is the shape of the thing the skill exists to catch: the code that ran the search and reads was never executed against the target, only read.
+A real audit run of a young, low-star GitHub repo advertising an installable CLI (`skills` / `agent-skills` bins). It looked like an ordinary small utility. It is a repackaged clone of a legitimate project with an injected Windows dropper, distributed through a fake "download and run the installer" README. This is the shape of the thing the skill exists to catch, and the audit stayed read-only throughout: the target's code was searched and read, never executed.
 
 Names below are the real public repositories. Every command is one you can run yourself.
 
@@ -13,7 +13,7 @@ Scope:
 - NOT CHECKED: dynamic behaviour of the dropped executable (out of scope for a read-only audit; would need a disposable sandbox). It does not need to run to reach the verdict.
 
 Evidence:
-1. Undeclared repackaged clone. GitHub reports `isFork:false`, `parent:null`, yet `git log` shows the history is another author's project up to a shared commit (`d563c24`), authored by "Karanjot786" / "Karanjot Singh". package.json still declares `"author": "Karanjot786"` and `"repository": "https://github.com/Karanjot786/agent-skills-cli"`: it points at a different owner than the repo hosting it. Owner `stbarbe` is a near-empty account (created 2025-01-04; at the audit date, 0 followers and 2 public repos, figures that can drift). The legitimate upstream `Karanjot786/agent-skills-cli` has an order of magnitude more stars, a real multi-year author, and is what the npm package points to. Karanjot786 is named here only as the legitimate author whose project was copied; nothing in this report implies any wrongdoing on their part.
+1. Undeclared repackaged clone. GitHub reports `isFork:false`, `parent:null`, yet `git log` shows the history is another author's project up to a shared commit (`d563c24`), authored by "Karanjot786" / "Karanjot Singh". package.json still declares `"author": "Karanjot786"` and a `repository` URL of `https://github.com/Karanjot786/agent-skills-cli`: it points at a different owner than the repo hosting it. Owner `stbarbe` is a near-empty account (created 2025-01-04; at the audit date, 0 followers and 2 public repos, figures that can drift). Whether the account owner authored the payload or the account itself was compromised is not determinable from public data and is not claimed here. The legitimate upstream `Karanjot786/agent-skills-cli` has an order of magnitude more stars, a real multi-year author, and is what the npm package points to. Karanjot786 is named here only as the legitimate author whose project was copied; nothing in this report implies any wrongdoing on their part.
 2. Injected dropper. The only substantive changes on top of the clone (`git diff d563c24..HEAD`): deleted issue/PR templates, rewrote README.md, and added one binary, `skills/deep-researcher/cli-skills-agent-retainableness.zip` (542 KB). The archive contains exactly three members:
    - `gcm.exe` (771,584 bytes), a Windows PE executable (magic bytes `MZ` / `4d5a90...`).
    - `bytecode.txt` (299,641 bytes), an obfuscated payload; first bytes are a string-assembly deobfuscator wrapper `return(function(...)local J=function(M)... for X=1,#M/2 ...` (Lua-style obfuscation).
@@ -31,3 +31,7 @@ Verify yourself (all read-only, none run the payload):
 2. `python -c "import zipfile; print(zipfile.ZipFile('skills/deep-researcher/cli-skills-agent-retainableness.zip').namelist())"`: lists gcm.exe, bytecode.txt, Launcher.cmd without extracting.
 3. `python -c "import zipfile; print(zipfile.ZipFile('skills/deep-researcher/cli-skills-agent-retainableness.zip').read('Launcher.cmd'))"`: prints `b'start gcm.exe bytecode.txt'`.
 4. Open README.md and confirm the "Download / double-click the .exe" instructions and the malformed badge URL; compare to the upstream README's `npm install` quickstart.
+
+---
+
+*This example is good-faith security research describing a pinned state on the stated date; see the [repo disclaimer](../../README.md#disclaimer). If you believe it is inaccurate, open an issue with evidence and it will be corrected or removed.*

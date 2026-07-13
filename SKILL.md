@@ -16,7 +16,7 @@ Installation is the moment of maximum exposure: install hooks run arbitrary code
 7. **The verdict binds to one commit/version.** Pin by commit SHA or artifact hash, never by tag name (tags can be moved after the audit). For unversioned bundles (marketplace skills, plain file downloads) record a sha256 of the audited content. Any later update is unaudited by definition, so "re-audit on update" belongs in every report.
 8. **GitHub always via `gh` CLI** (authenticated, structured JSON), never by scraping the website. Where `gh api` is unavailable, its public read endpoints return the same JSON through any authenticated fetch (`https://api.github.com/repos/<o>/<r>/contributors`, `.../users/<owner>`, `.../commits`); a blocked endpoint is marked NOT-CHECKED, never downgraded to HTML scraping.
 
-All commands below use single-quote literals, so the regex patterns need no re-escaping in bash or PowerShell; do not re-escape them. The `rg`/`gh`/`git` one-liners run in both shells; the few Unix pipe helpers (`wc`, `sort`, `uniq`) and the `curl` OSV call assume a Unix-like shell, so on Windows run them from Git Bash (each also has a GET fallback noted inline).
+All commands below use single-quote literals, so the regex patterns need no re-escaping in bash or PowerShell; do not re-escape them. The `rg`/`gh`/`git` one-liners run in both shells; the few Unix pipe helpers (`wc`, `sort`, `uniq`) assume a Unix-like shell, so on Windows run them from Git Bash. The `curl` OSV call also assumes a Unix-like shell and has a GET fallback noted inline.
 
 ## Scale depth to blast radius
 
