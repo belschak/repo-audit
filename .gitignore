@@ -7,6 +7,9 @@ battle-tests/
 # for the maintainer's own review, not part of the published skill.
 gates/
 
+# Local launch drafts (Reddit/X post texts); posted manually, never shipped.
+launch-notes/
+
 # OS / editor
 .DS_Store
 Thumbs.db
