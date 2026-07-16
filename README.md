@@ -100,3 +100,7 @@ The audit techniques read only public data through official, documented endpoint
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+---
+
+Built and maintained by [David Belschak](https://belschak.dev).
