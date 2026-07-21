@@ -2,6 +2,8 @@
 
 **A Claude Code / agent skill that reads third-party code for red flags before you install it.**
 
+[![License](https://img.shields.io/github/license/belschak/repo-audit)](LICENSE)
+
 ![Animated diagram: a repo enters a six-phase read-only audit and comes out stamped with a verdict](assets/demo.svg)
 
 Agents install third-party skills the way people run `curl | bash`. This skill is the look before running.
